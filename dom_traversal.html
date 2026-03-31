@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive DOM Traversal</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background-color: #F0E6D6;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            background-color: #262626;
+            color: #D3D3D3;
+            padding: 20px;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 800px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px #2D2D2D;
+        }
+
+        header h2 { 
+            margin: 0 0 10px 0; 
+            padding-bottom: 5px; 
+            border-bottom: 2px solid #7F8C8D;
+            animation: rainbowBackground 5s infinite; 
+        }
+
+        @keyframes rainbowBackground {
+            0%   { border-bottom-color: #696969; }
+            10%  { border-bottom-color: #f7f7f7; }
+            20%  { border-bottom-color: #ffadad; }
+            40%  { border-bottom-color: #ffd6a5; }
+            50%  { border-bottom-color: #fdffb6; }
+            60%  { border-bottom-color: #caffbf; }
+            70%  { border-bottom-color: #9bf6ff; }
+            80%  { border-bottom-color: #bdb2ff; }
+            90%  { border-bottom-color: #ffc6ff; }
+            100% { border-bottom-color: #696969; }
+        }
+
+        header p { margin: 5px 0; font-size: 0.9rem; }
+
+        .controls {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        button {
+            padding: 15px 15px;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+            background-color: #0E3146;
+            color: #E7EBED;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        button:hover { background-color: #4A6572; }
+        button.delete { background-color: #800000; }
+        button.delete:hover { background-color: #9A4B4B; }
+
+        .container { width: 100%; max-width: 900px; }
+
+        .node {
+            border: 2px solid #2D2D2D;
+            margin: 10px;
+            padding: 15px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        @keyframes rainbowNode {
+            0%   { border-color: #000000; }
+            10%  { border-color: #8B0000; }
+            20%  { border-color: #A95000; }
+            40%  { border-color: #A77F03; } 
+            50%  { border-color: #006400; } 
+            60%  { border-color: #00008b; } 
+            70%  { border-color: #301934; } 
+            80%  { border-color: #5D0066; } 
+            90%  { border-color: #000000; } 
+            100% { border-color: #2D2D2D; }
+        }
+        
+        .node {
+            border: 2px solid #2D2D2D;
+            margin: 10px;
+            padding: 15px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            animation: rainbowNode 5s infinite; 
+        }
+
+        .grandparent { background-color: #ECF0F1; min-height: 200px; }
+        .parent { background-color: #BDC3C7; margin-left: 30px; }
+        .child { background-color: #CDD8C0; margin-left: 60px; }
+
+        .highlight {
+            border: 3px solid #F1C40F !important;
+            background-color: #F9E79F !important;
+            box-shadow: 0 0 15px #F1C40F;
+            transform: scale(1.01);
+        }
+
+        .label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h2>Student Profile</h2>
+        <p><strong>Name:</strong> Bryan Jay Madrideo Lumabas</p>
+        <p><strong>Sex:</strong> Male</p>
+        <p><strong>Address:</strong> Zone 1, Aniog, Sagñay 4421, Camarines Sur</p>
+        <p><strong>Course, Year & Section:</strong> BSIT 2D</p>
+        <p><strong>School:</strong> Partido State University</p>
+        <p><strong>School ID:</strong> 202210531</p>
+        <p><strong>Semester & Academic Year:</strong> 2nd Semester, AY 2025-2026</p>
+        <p><strong>Subject:</strong> [PF2] Event-Driven Programming</p>
+        <p><strong>Instructor:</strong> Arjay Abio</p>
+    </header>
+        
+        <h1>An Interactive DOM Traversal</h1>
+        
+    <div class="controls">
+        <button onclick="traverseDown()">Traverse Down</button>
+        <button onclick="traverseUp()">Traverse Up</button>
+        <button onclick="traverseNext()">Next Sibling</button>
+        <button onclick="traversePrev()">Prev Sibling</button>
+        <button onclick="addChild()">Add Child</button>
+        <button class="delete" onclick="deleteNode()">Delete Selected</button>
+    </div>
+
+    <div class="container" id="main-container">
+        <div class="node grandparent" id="grandparent-node">
+            <span class="label">Grandparent</span>
+            
+            <div class="node parent">
+                <span class="label">Parent</span>
+                <div class="node child"><span class="label">Child</span></div>
+                <div class="node child"><span class="label">Child</span></div>
+            </div>
+
+            <div class="node parent">
+                <span class="label">Parent</span>
+                <div class="node child"><span class="label">Child</span></div>
+                <div class="node child"><span class="label">Child</span></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedNode = null;
+        function setupSelection() {
+            document.getElementById('main-container').addEventListener('click', function(e) {
+                e.stopPropagation();
+                
+                const target = e.target.closest('.node');
+                if (!target) return;
+
+                selectElement(target);
+            });
+        }
+
+        function selectElement(element) {
+            if (selectedNode) {
+                selectedNode.classList.remove('highlight');
+            }
+            
+            selectedNode = element;
+            selectedNode.classList.add('highlight');
+        }
+
+        function traverseDown() {
+            if (!selectedNode) return alert("Select a node first!");
+
+            const firstChild = selectedNode.querySelector('.node');
+            
+            if (firstChild) selectElement(firstChild);
+            else alert("No children found!");
+        }
+
+        function traverseUp() {
+            if (!selectedNode) return alert("Select a node first!");
+            const parent = selectedNode.parentElement;
+            if (parent && parent.classList.contains('node')) {
+                selectElement(parent);
+            } else {
+                alert("Already at the top level!");
+            }
+        }
+
+        function traverseNext() {
+            if (!selectedNode) return alert("Select a node first!");
+            const next = selectedNode.nextElementSibling;
+            if (next && next.classList.contains('node')) {
+                selectElement(next);
+            } else {
+                alert("No next sibling found!");
+            }
+        }
+
+        function traversePrev() {
+            if (!selectedNode) return alert("Select a node first!");
+            
+            const prev = selectedNode.previousElementSibling;
+            if (prev && prev.classList.contains('node')) {
+                selectElement(prev);
+            } else {
+                alert("No previous sibling found!");
+            }
+        }
+
+
+        function addChild() {
+            if (!selectedNode) return alert("Select a node first!");
+            if (selectedNode.classList.contains('grandparent')) {
+
+                const newParent = createNode('parent', 'Parent');
+                newParent.appendChild(createNode('child', 'Child'));
+                newParent.appendChild(createNode('child', 'Child'));
+                selectedNode.appendChild(newParent);
+            } 
+            else if (selectedNode.classList.contains('parent')) {
+
+                selectedNode.appendChild(createNode('child', 'Child'));
+            } 
+            else {
+                alert("Restriction: Cannot add children to a Child node!");
+            }
+        }
+
+        function deleteNode() {
+            if (!selectedNode) return alert("Select a node first!");
+            if (selectedNode.classList.contains('grandparent')) {
+                alert("Restriction: You cannot delete the Grandparent node!");
+            } else {
+                const toRemove = selectedNode;
+                selectedNode = null;
+                toRemove.remove();
+            }
+        }
+
+        function createNode(type, labelText) {
+            const div = document.createElement('div');
+            div.className = `node ${type}`;
+            
+            const span = document.createElement('span');
+            span.className = 'label';
+            span.innerText = labelText;
+            
+            div.appendChild(span);
+            return div;
+        }
+
+        setupSelection();
+    </script>
+</body>
+</html>
