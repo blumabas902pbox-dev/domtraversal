@@ -8,7 +8,7 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
-            background-color: #FBF2F1;
+            background-color: #C8E6D1;
             margin: 0;
             padding: 20px;
             display: flex;
@@ -17,25 +17,25 @@
         }
 
         header {
-            background-color: #262626;
-            color: #D3D3D3;
+            background-color: #1A5A43;
+            color: #C8E6D1;
             padding: 20px;
             border-radius: 8px;
-            width: 80%;
-            max-width: 800px;
+            width: 90%;
+            max-width: 1000px;
             margin-bottom: 30px;
-            box-shadow: 0 4px 6px #2D2D2D;
+            box-shadow: 0 4px 6px #567D76;
         }
 
         header h2 { 
             margin: 0 0 10px 0; 
             padding-bottom: 5px; 
-            border-bottom: 2px solid #7F8C8D;
+            border-bottom: 2px solid #286650;
             animation: rainbowBackground 5s infinite; 
         }
 
         @keyframes rainbowBackground {
-            0%   { border-bottom-color: #696969; }
+            0%   { border-bottom-color: #C8E6D1; }
             10%  { border-bottom-color: #f7f7f7; }
             20%  { border-bottom-color: #ffadad; }
             40%  { border-bottom-color: #ffd6a5; }
@@ -44,7 +44,7 @@
             70%  { border-bottom-color: #9bf6ff; }
             80%  { border-bottom-color: #bdb2ff; }
             90%  { border-bottom-color: #ffc6ff; }
-            100% { border-bottom-color: #696969; }
+            100% { border-bottom-color: #C8E6D1; }
         }
 
         header p { margin: 5px 0; font-size: 0.9rem; }
@@ -52,30 +52,30 @@
         .controls {
             margin-bottom: 20px;
             display: flex;
-            gap: 10px;
+            gap: 25px;
             flex-wrap: wrap;
             justify-content: center;
         }
 
         button {
-            padding: 15px 15px;
+            padding: 10px 20px;
             cursor: pointer;
             border: none;
             border-radius: 4px;
-            background-color: #0E3146;
-            color: #E7EBED;
+            background-color: #2E8B57;
+            color: #C8E6D1;
             font-weight: bold;
             transition: background 0.3s;
         }
 
         button:hover { background-color: #4A6572; }
-        button.delete { background-color: #800000; }
+        button.delete { background-color: #C24061; }
         button.delete:hover { background-color: #9A4B4B; }
 
         .container { width: 100%; max-width: 900px; }
 
         .node {
-            border: 2px solid #2D2D2D;
+            border: 2px solid #CB7C4B;
             margin: 10px;
             padding: 15px;
             border-radius: 8px;
@@ -97,7 +97,7 @@
         }
         
         .node {
-            border: 2px solid #2D2D2D;
+            border: 2px solid #3D9B70;
             margin: 10px;
             padding: 15px;
             border-radius: 8px;
@@ -106,9 +106,9 @@
             animation: rainbowNode 5s infinite; 
         }
 
-        .grandparent { background-color: #7E8C7A; min-height: 200px; }
+        .grandparent { background-color: #E2E8E4; min-height: 200px; }
         .parent { background-color: #D4D9C7; margin-left: 30px; }
-        .child { background-color: #8A9A5B; margin-left: 60px; }
+        .child { background-color: #B8C9BC; margin-left: 60px; }
 
         .highlight {
             border: 3px solid #F1C40F !important;
@@ -127,21 +127,15 @@
     </style>
 </head>
 <body>
-
     <header>
-        <h2>Student Profile</h2>
-        <p><strong>Name:</strong> Bryan Jay Madrideo Lumabas</p>
-        <p><strong>Sex:</strong> Male</p>
-        <p><strong>Address:</strong> Zone 1, Aniog, Sagñay 4421, Camarines Sur</p>
-        <p><strong>Course, Year & Section:</strong> BSIT 2D</p>
-        <p><strong>School:</strong> Partido State University</p>
-        <p><strong>School ID:</strong> 202210531</p>
-        <p><strong>Semester & Academic Year:</strong> 2nd Semester, AY 2025-2026</p>
-        <p><strong>Subject:</strong> [PF2] Event-Driven Programming</p>
-        <p><strong>Instructor:</strong> Arjay Abio</p>
-    </header>
-        
-        <h1>An Interactive DOM Traversal</h1>
+        <h2>An Interactive DOM Traversal</h2>
+        <p><strong>Instructions:</strong></p>
+        <p><strong>1. Select a Node First!</strong> (Grandparent, Parent, Child.) and press once.</p>
+        <p><strong>2. If Grandparent:</strong> Press traverse down to trace its children but cannot traverse up, find a sibling.</p>
+        <p><strong>3. If Parent:</strong> Press traverse up to find the lost parent. Press traverse down to locate the mischievous child. Press next or previous sibling if had one. Especially, adding another child to the family isn't that fun.</p>
+        <p><strong>4. If Child:</strong> Press traverse up to discover its ancestry. Find your sibling by next and prev sibling.</p>
+        <p><strong>5. Take Note:</strong> Grandparent cannot be deleted. A child cannot have a child.<br><br>"Family is a treasure that cannot be replaced by any luxury." Bryan Jay M.</p>
+        <br>
         
     <div class="controls">
         <button onclick="traverseDown()">Traverse Down</button>
@@ -151,6 +145,7 @@
         <button onclick="addChild()">Add Child</button>
         <button class="delete" onclick="deleteNode()">Delete Selected</button>
     </div>
+    </header>
 
     <div class="container" id="main-container">
         <div class="node grandparent" id="grandparent-node">
